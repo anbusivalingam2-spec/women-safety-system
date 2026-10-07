@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Women Safety System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-view="login">
+
+<header class="topbar">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 5 7v8c0 7 4.6 12.4 11 14 6.4-1.6 11-7 11-14V7L16 3Z" fill="currentColor"/><path d="m11 16 4 4 7-8" fill="none" stroke="var(--brand)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="brand-name">Women Safety System</span>
+  </div>
+  <button id="btnLogout" class="btn-ghost" type="button" hidden>Logout</button>
+</header>
+
+<div id="modebar" class="modebar" role="status"></div>
+
+<main>
+
+  <!-- LOGIN -->
+  <section id="view-login" class="card auth">
+    <h1>Login</h1>
+    <p class="lead">Sign in to open your SOS screen.</p>
+    <form id="formLogin" novalidate>
+      <label for="loginUser">Phone number</label>
+      <input id="loginUser" name="user" type="text" inputmode="tel" autocomplete="username" placeholder="10-digit phone number">
+      <label for="loginPass">Password</label>
+      <input id="loginPass" name="pass" type="password" autocomplete="current-password" placeholder="Your password">
+      <p id="loginErr" class="form-err" role="alert" hidden></p>
+      <button class="btn btn-primary" type="submit">Login</button>
+    </form>
+    <p class="switch">New here? <a href="#" data-go="register">Create an account</a></p>
+  </section>
+
+  <!-- REGISTER -->
+  <section id="view-register" class="card auth" hidden>
+    <h1>Register</h1>
+    <p class="lead">Create your account. It takes under a minute.</p>
+    <form id="formRegister" novalidate>
+      <label for="regName">Full name</label>
+      <input id="regName" name="name" type="text" autocomplete="name" placeholder="Your full name">
+      <label for="regPhone">Phone number</label>
+      <input id="regPhone" name="phone" type="text" inputmode="tel" autocomplete="tel" placeholder="10-digit phone number">
+      <label for="regPass">Password</label>
+      <input id="regPass" name="pass" type="password" autocomplete="new-password" placeholder="At least 6 characters">
+      <p id="regErr" class="form-err" role="alert" hidden></p>
+      <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+    <p class="switch">Already registered? <a href="#" data-go="login">Back to login</a></p>
+  </section>
+
+  <!-- HOME / SOS -->
+  <section id="view-home" class="home" hidden>
+    <div class="card hello">
+      <div>
+        <p class="eyebrow">Signed in</p>
+        <h1 id="helloName">Hello</h1>
+      </div>
+      <label class="switch-row" for="shakeToggle">
+        <span>Shake to SOS</span>
+        <input id="shakeToggle" type="checkbox" role="switch">
+      </label>
+    </div>
+
+    <div id="locCard" class="card loc" data-state="wait">
+      <div class="loc-head">
+        <span class="dot" aria-hidden="true"></span>
+        <strong id="locTitle">Finding your location</strong>
+      </div>
+      <p id="locText" class="muted">Allow location access when the browser asks.</p>
+    </div>
+
+    <div class="card">
+      <h2>Emergency contacts</h2>
+      <form id="formContacts" novalidate>
+        <label for="c1">Contact 1</label>
+        <input id="c1" type="text" inputmode="tel" placeholder="Phone number">
+        <label for="c2">Contact 2</label>
+        <input id="c2" type="text" inputmode="tel" placeholder="Phone number">
+        <label for="c3">Contact 3</label>
+        <input id="c3" type="text" inputmode="tel" placeholder="Phone number">
+        <button class="btn btn-primary" type="submit">Save numbers</button>
+      </form>
+    </div>
+
+    <button id="btnSOS" class="sos" type="button">
+      <span class="sos-big">SOS</span>
+      <span class="sos-small">Tap in an emergency</span>
+    </button>
+
+    <div id="sosResult" class="card result" hidden aria-live="polite"></div>
+
+    <div class="grid2">
+      <button id="btnSiren" class="btn btn-siren" type="button">Siren</button>
+      <button id="btnStopSiren" class="btn btn-dark" type="button" disabled>Stop siren</button>
+      <button id="btnFake" class="btn btn-teal" type="button">Fake call</button>
+      <a id="btnCall" class="btn btn-blue" href="#" role="button">Call contact</a>
+    </div>
+  </section>
+
+  <!-- ADMIN -->
+  <section id="view-admin" class="admin" hidden>
+    <div class="admin-head">
+      <div>
+        <p class="eyebrow">Administrator</p>
+        <h1>Admin panel</h1>
+      </div>
+      <button id="btnLoad" class="btn btn-primary btn-sm" type="button">Load users</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><span class="stat-n" id="statUsers">0</span><span class="stat-l">Registered users</span></div>
+      <div class="stat"><span class="stat-n" id="statSos">0</span><span class="stat-l">SOS alerts</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h2>Registered users</h2>
+        <input id="userSearch" class="search" type="search" placeholder="Search name or phone" aria-label="Search users">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Registered</th></tr></thead>
+          <tbody id="usersBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>SOS history</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Time</th><th>User</th><th>Trigger</th><th>Location</th></tr></thead>
+          <tbody id="sosBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Fake call overlay -->
+<div id="callOverlay" class="call" hidden role="dialog" aria-modal="true" aria-label="Incoming call">
+  <div class="call-inner">
+    <p id="callState" class="call-state">Incoming call</p>
+    <h2 id="callName" class="call-name">Mom</h2>
+    <p id="callTimer" class="call-timer" hidden>00:00</p>
+    <div class="call-actions">
+      <button id="callDecline" class="call-btn decline" type="button">Decline</button>
+      <button id="callAccept" class="call-btn accept" type="button">Accept</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
